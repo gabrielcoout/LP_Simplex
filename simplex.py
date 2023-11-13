@@ -26,7 +26,7 @@ def criar_tableau(custo_atual,custo_reduzido,b,B_1A):
 
 def simplex_iteration(tableau, B, i):
     while np.any(np.round(tableau[0,1:],10)<0):
-        print(B)
+        # print(B)
         index_j = np.where(tableau[0,1:]<0)[0][0]
         
         denominador = tableau[1:,index_j+1].copy()
@@ -34,12 +34,12 @@ def simplex_iteration(tableau, B, i):
         dummy = tableau[1:,0]/denominador
         index_i = np.nanargmin(dummy) 
         
-        print(B[index_i],'<-',index_j)
+        # print(B[index_i],'<-',index_j)
         B[index_i] = index_j
         
         
         tableau = np.round(pivot(tableau,index_i+1,index_j+1),10)
-        print(tableau)
+        # print(tableau)
         i+=1
         
     return tableau, B, i
@@ -75,16 +75,16 @@ def simplex(c, A, b):
 
         custo_aux = concatenate((np.zeros(n_aux-m),np.ones(m)),axis=0)
         Base_aux = [n for n in range(n,n_aux)] 
-        print(Base_aux)
+        # print(Base_aux)
         custo_atual_aux = -dot(custo_aux[Base_aux],b)
         custo_reduzido_aux = custo_aux -  dot(custo_aux[Base_aux].reshape(1,m), A_aux)
 
         tableau_aux = criar_tableau(custo_atual_aux, custo_reduzido_aux, b, A_aux) 
 
-        print(tableau_aux)
+        # print(tableau_aux)
         sol_inicial, B, i = simplex_iteration(tableau_aux, Base_aux, i)
-        print('Solução Auxiliar encontrada')
-        print(B)
+        # print('Solução Auxiliar encontrada')
+        # print(B)
         if sol_inicial[0,0]>0:
             print('The original LP has no feasible solution.')
         
@@ -102,10 +102,10 @@ def simplex(c, A, b):
                             continue
                         else:
                             sol_inicial = pivot(sol_inicial,l+1,index+1)
-                            print(f'{B[l]}<-{index}')
+                            # print(f'{B[l]}<-{index}')
                             B[l] = index
                             break
-        print(sol_inicial)
+        # print(sol_inicial)
 
         x_ = np.zeros(A_aux.shape[1])
         x_[B] = sol_inicial[1:,0]
@@ -120,7 +120,7 @@ def simplex(c, A, b):
 
         tableau = criar_tableau(custo_atual, custo_reduzido, var_basicas, table_A)
 
-        print(B,'\n',tableau)
+        # print(B,'\n',tableau)
         resultado, base_final, i = simplex_iteration(tableau, B, i)
 
 
