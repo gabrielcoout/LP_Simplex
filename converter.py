@@ -51,6 +51,7 @@ def mps_to_numpy(file):
             i+=1
     return c, A, b
 
-if __name__ == '__main__':
-    c, A, b = mps_to_numpy("LP_Simplex/share2b.mps")
-    
+
+# if __name__ == '__main__':
+#     c, A, b = mps_to_numpy("LP_Simplex/afiro.mps")
+#     print(A.shape)

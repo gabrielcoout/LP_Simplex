@@ -25,7 +25,7 @@ def criar_tableau(custo_atual,custo_reduzido,b,B_1A):
     return tableau
 
 def simplex_iteration(tableau, B, i):
-    while np.any(np.round(tableau[0,1:],10)<0):
+    while np.any(np.round(tableau[0,1:],30)<0):
         # print(B)
         index_j = np.where(tableau[0,1:]<0)[0][0]
         
@@ -33,6 +33,7 @@ def simplex_iteration(tableau, B, i):
         denominador[denominador<=0] = np.nan
         dummy = tableau[1:,0]/denominador
         index_i = np.nanargmin(dummy) 
+
         
         # print(B[index_i],'<-',index_j)
         B[index_i] = index_j
@@ -83,7 +84,7 @@ def simplex(c, A, b):
 
         # print(tableau_aux)
         sol_inicial, B, i = simplex_iteration(tableau_aux, Base_aux, i)
-        # print('Solução Auxiliar encontrada')
+        print('Solução Auxiliar encontrada')
         # print(B)
         if sol_inicial[0,0]>0:
             print('The original LP has no feasible solution.')
@@ -136,10 +137,10 @@ def simplex(c, A, b):
 
 if __name__ == '__main__':
     np.set_printoptions(suppress=True)
-    A = np.array([[0.2,0.5,0.4,1,0],
-                  [0.6,0.4,0.4,0,1],
-                  [1,1,1,0,0]])
-    c = np.array([0.56,0.81,0.46,0,0])
-    b = np.array([0.3,0.5,1])
+    A = np.array([[1,2,2,1,0,0],
+                  [2,1,2,0,1,0],
+                  [2,2,1,0,0,1]])
+    c = np.array([-10,-12,-12,0,0,0])
+    b = np.array([20,20,20])
     # print(len(b),len(c))
     simplex(c,A,b)
