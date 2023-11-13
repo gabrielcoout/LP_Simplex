@@ -1,0 +1,6 @@
+*.ipynb
+emps
+bgdbg1
+env
+__pycache__
+*json
