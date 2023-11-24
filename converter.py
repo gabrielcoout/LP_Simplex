@@ -33,7 +33,7 @@ def mps_to_numpy(file):
     # RHS matrix
     b = np.zeros(len(lp_prob['constraints']))
     for index, row in enumerate(lp_prob['constraints']):
-        b[index] = row['constant']
+        b[index] =  - row['constant'] if row['constant']!=0 else 0
 
     
     # Matriz dos coeficientes
