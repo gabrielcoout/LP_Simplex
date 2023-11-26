@@ -12,3 +12,7 @@ $ for f in bgdbg1 bgetam bgindy bgprtr box1 ceria3d chemcom cplex1 cplex2 \
    klein3 mondou2 pang pilot4i qual reactor refinery vol1 woodinfe; do
    ./emps "${f}" > "${f}.mps"
 done
+
+Arenale
+Exemplo 2.1
+Exemplo 2.3
