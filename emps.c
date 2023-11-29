@@ -16,6 +16,18 @@
  * to file names unless compiled with -DNO_dot_mps.
  */
 
+/*
+
+Modo de uso: 
+
+Digitar no terminal "> ./emps "${f}" > "${f}.mps" <" para converter um problema de programação linear
+comprimido pro formato MPS
+
+Digitar > curl -O "https://netlib.org/lp/data/{lp_problem}" < para fazer download do problema da base de dados
+netlib.org
+
+*/
+
 #include <stdio.h>
 #ifdef DeSmet
 extern char *strcpy(), *strncpy();
