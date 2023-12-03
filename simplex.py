@@ -63,7 +63,7 @@ def iteracao_simplex(tableau, B, i, p):
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 
-def simplex(c, A, b, p=10, msg=False):
+def simplex(c, A, b, p=1, msg=False):
     start_time = time()
     
     # Input do problema
@@ -109,13 +109,13 @@ def simplex(c, A, b, p=10, msg=False):
         
         sol_inicial, B, i = iteracao_simplex(tableau_aux, Base_aux, i, p)               # aplicação do tableau no problema auxiliar
 
-        
         if round(-sol_inicial[0,0],p)>0:                                                # teste de viabilidade -> se o custo reduzido é maior que 0
             print(f'O problema original não tem solução. O custo obtido foi  {-sol_inicial[0][0]:.10f}')                                          
             return None                                                                 
             
         else:
             print('Solução Auxiliar encontrada[2]\n')
+            pass
     
     # ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ def simplex(c, A, b, p=10, msg=False):
 
     if len(artificial_var) > 0:                                                           # caso haja alguma variável artifcial na base
         for art_var in artificial_var:
-            if np.all(np.round(sol_inicial[art_var+1,:n+1],p)==0):                        # checa  a existência de restricão redundante  
+            if np.all(np.round(sol_inicial[art_var+1,:n+1],p)==0):                        # checa  a existência de restricão redundante 
                 m_ = sol_inicial.shape[0]                                                 # atualiza o número de linhas (restrições)      
                 sol_inicial = sol_inicial[[n for n in range(m_) if n!=art_var+1]]         # descarta a restrição redundante
                 B[art_var] = -1                                                           # associa -1 ao índice básico relativo a uma
@@ -135,16 +135,17 @@ def simplex(c, A, b, p=10, msg=False):
         B = B[B!=-1]                                                                      # elimina da base as restrições redundantes
         m = sol_inicial.shape[0]-1                                                        # atualiza o valor de m (número de linhas da matriz A)
         
-    x = np.zeros(A_aux.shape[1])                                                   
-    x[B] = sol_inicial[1:,0]
+    x = np.zeros(A_aux.shape[1])                                                          # solução básica viável inicial para                                                   
+    x[B] = sol_inicial[1:,0]                                                              # o problema original
 
     # ---------------------------------------------------------------------------------------------------------------------------------
 
     # Problema Principal | Simplex Fase 2
 
-    var_basicas = sol_inicial[1:,0]                                                 # custo reduzido na base B
+    var_basicas = sol_inicial[1:,0]                                                 # variáveis básicas do tableau inicial
     custo_atual = -dot(c[B],x[B])                                                   # custo atual na base B
     table_A = sol_inicial[1:,1:n+1]                                                 # matrix B_1A, aproveitada do problema auxiliar
+    # table_A = dot(inv(A[B]),A)
     custo_reduzido = c - dot(c[B].reshape(1,m),table_A)                             # custo reduzido na base B
     tableau = criar_tableau(custo_atual, custo_reduzido, var_basicas, table_A)      # cria o tableau pro problema original na base B
 
@@ -168,16 +169,9 @@ def simplex(c, A, b, p=10, msg=False):
 
 if __name__ == '__main__':
     np.set_printoptions(suppress=True)
-    # A = np.array([[1,1,1,0,0,0,1,0],
-    #               [0,0,0,1,1,1,0,1],
-    #               [1,0,0,1,0,0,0,0],
-    #               [0,1,0,0,1,0,0,0],
-    #               [0,0,1,0,0,1,0,0]])
-    # c = np.array([4,2,5,11,7,4,0,0])
-    # b = np.array([800,1000,500,400,900])
-    # print(len(b),len(c))
-    
-    c, A, b = mps_to_numpy('LP_Problems/share2b.mps')
+   
+    c, A, b = mps_to_numpy('test/adlittle.mps')
+
     simplex(c,A,b)
 
 
